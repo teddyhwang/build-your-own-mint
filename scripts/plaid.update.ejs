@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Plaid Link</title>
+    <link rel="stylesheet" href="https://threads.plaid.com/threads.css">
+
+    <link rel="stylesheet" type="text/css" href="plaid.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      button {
+        display: block !important;
+        margin: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+  <main class="main">
+    <div class="grid">
+      <div class="grid__column grid__column--is-twelve-columns">
+        <div id="banner" class="everpresent-content">
+          <h1 class="everpresent-content__heading">Plaid Link</h1>
+          <p id="intro" class="everpresent-content__subheading">
+            Refresh Authentication
+          </p>
+        </div>
+        <div id="accounts"></div>
+      </div>
+    </div>
+    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+    <script>
+      const accounts = <%- JSON.stringify(accounts) %>;
+      accounts.forEach((account, index) => {
+        const linkHandler = Plaid.create({
+          env: 'development',
+          clientName: 'Plaid Refresh Authentication',
+          key: '<%= PLAID_PUBLIC_KEY %>',
+          product: ['transactions'],
+          token: account.public_token,
+          onSuccess: function(public_token, metadata) {
+          },
+          onExit: function(err, metadata) {
+            if (err != null) {
+            }
+          }
+        });
+        const buttonId = `link-btn-${index}`;
+        const button = document.createElement('button')
+        const container = document.getElementById('accounts')
+        button.id = buttonId
+        button.classList = ['button button--is-primary']
+        button.innerHTML = `Refresh Authentication for ${account.name}`
+        container.appendChild(button)
+        document.getElementById(`link-btn-${index}`).onclick = function() {
+          linkHandler.open();
+        };
+      });
+    </script>
+  </body>
+</html>

@@ -30,6 +30,23 @@ app.get('/', (req, res, next) => {
   })
 })
 
+app.get('/update', async (req, res, next) => {
+  const accounts = Object.keys(process.env)
+    .filter(key => key.startsWith(`PLAID_TOKEN`))
+    .map((key) => ({
+      name: key.replace(/^PLAID_TOKEN_/, '').replace(/_/g, ' '),
+      token: process.env[key],
+    }))
+  for (let i=0; i < accounts.length; i++) {
+    const public_token_response = await client.createPublicToken(accounts[i].token)
+    accounts[i].public_token = public_token_response.public_token
+  }
+  res.render(path.resolve(__dirname, 'plaid.update.ejs'), {
+    PLAID_PUBLIC_KEY: process.env.PLAID_PUBLIC_KEY,
+    accounts,
+  })
+})
+
 const APP_PORT = 8080
 let PUBLIC_TOKEN = null
 let ITEM_ID = null
@@ -67,7 +84,6 @@ app.post('/get_access_token', function(request, response, next) {
     });
   });
 });
-
 
 // Retrieve Transactions for an Item
 // https://plaid.com/docs/#transactions

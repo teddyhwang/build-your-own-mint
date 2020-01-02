@@ -25,7 +25,7 @@
         <div id="container" class="initial-view">
           <p class="initial-view__description">
             Click the button below and login to the bank corresponding to "<%= PLAID_ACCOUNT %>".
-            An access token will be saved in lib/credientials.json.
+            An access token will be saved in .env
           </p>
 
           <button id="link-btn" class="button button--is-primary">Connect with Plaid</button>
@@ -376,11 +376,11 @@
     });
   })(jQuery);
 
-function qs(key) {
+  function qs(key) {
     key = key.replace(/[*+?^$.\[\]{}()|\\\/]/g, "\\$&"); // escape RegEx meta chars
     var match = location.search.match(new RegExp("[?&]"+key+"=([^&]+)(&|$)"));
     return match && decodeURIComponent(match[1].replace(/\+/g, " "));
-}
+  }
   </script>
 </body>
 </html>
