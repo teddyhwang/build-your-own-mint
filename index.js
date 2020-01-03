@@ -1,5 +1,5 @@
 const path = require('path')
-envPath = path.resolve(process.cwd(), '.env')
+let envPath = path.resolve(process.cwd(), '.env')
 if (process.env['DOT_ENV_PATH']) {
   // For cron jobs
   envPath = path.resolve(process.env['DOT_ENV_PATH'], '.env');
