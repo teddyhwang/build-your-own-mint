@@ -12,8 +12,8 @@ const { updateSheet } = require('./lib/update')
 
 ;(async () => {
   const transactions = await fetchTransactions()
-  const balances = await fetchBalances()
-  console.log(balances)
+  // const balances = await fetchBalances()
+  // console.log(balances)
   const updates = transformTransactionsToUpdates(transactions)
   updateSheet(updates)
 })()
